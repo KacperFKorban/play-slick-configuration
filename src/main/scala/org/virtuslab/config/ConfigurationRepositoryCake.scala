@@ -3,7 +3,6 @@ package org.virtuslab.config
 import org.virtuslab.config.util.HasJdbcDriver
 import scala.concurrent.ExecutionContext
 
-
 trait ConfigurationRepositoryCake extends ConfigurationEntriesCake {
   self: HasJdbcDriver =>
 
@@ -18,8 +17,7 @@ trait ConfigurationRepositoryCake extends ConfigurationEntriesCake {
         for {
           conf <- configurationEntriesQueries
           if conf.key === key
-        } yield conf.value
-    )
+        } yield conf.value)
 
   }
 
@@ -30,8 +28,8 @@ trait ConfigurationRepositoryCake extends ConfigurationEntriesCake {
     }
 
     /**
-      * Updates configuration entry if it exists or create new one otherwise.
-      */
+     * Updates configuration entry if it exists or create new one otherwise.
+     */
     def createOrUpdate(entry: ConfigurationEntry)(implicit executionContext: ExecutionContext): DBIO[Unit] = {
       valueByKeyQuery(entry.key).update(entry.value).flatMap { rowsUpdated =>
         if (rowsUpdated == 0) {
@@ -43,9 +41,9 @@ trait ConfigurationRepositoryCake extends ConfigurationEntriesCake {
     }
 
     /**
-      * Removes element from configuration.
-      * @return number of deleted elements
-      */
+     * Removes element from configuration.
+     * @return number of deleted elements
+     */
     def delete(key: String): DBIO[Int] = {
       valueByKeyQuery(key).delete
     }
